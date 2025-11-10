@@ -1,3 +1,51 @@
+// ===== MATRIX RAIN EFFECT (Optional) =====
+// Create canvas for background effect
+const canvas = document.createElement('canvas');
+canvas.style.position = 'fixed';
+canvas.style.top = '0';
+canvas.style.left = '0';
+canvas.style.width = '100%';
+canvas.style.height = '100%';
+canvas.style.zIndex = '-2';
+canvas.style.opacity = '0.15';
+canvas.style.pointerEvents = 'none';
+document.body.appendChild(canvas);
+
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+const matrix = "01";
+const fontSize = 14;
+const columns = canvas.width / fontSize;
+const drops = Array(Math.floor(columns)).fill(1);
+
+function drawMatrix() {
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    ctx.fillStyle = '#00f5ff';
+    ctx.font = fontSize + 'px monospace';
+    
+    for (let i = 0; i < drops.length; i++) {
+        const text = matrix[Math.floor(Math.random() * matrix.length)];
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+        
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+            drops[i] = 0;
+        }
+        drops[i]++;
+    }
+}
+
+setInterval(drawMatrix, 50);
+
+// Resize handler
+window.addEventListener('resize', () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+});
+
 // ===== NAVBAR SCROLL EFFECT =====
 const navbar = document.getElementById('navbar');
 const hamburger = document.querySelector('.hamburger');
@@ -148,8 +196,33 @@ projectCards.forEach(card => {
     });
 });
 
-// ===== CONSOLE MESSAGE =====
-console.log('%c🚀 Portfolio Website Loaded Successfully!', 
-    'color: #667eea; font-size: 16px; font-weight: bold;');
-console.log('%cDesigned & Developed with ❤️', 
-    'color: #764ba2; font-size: 12px;');
+// ===== CONSOLE MESSAGE - FUTURISTIC =====
+const styles = [
+    'color: #00f5ff',
+    'background: #000',
+    'font-size: 20px',
+    'font-weight: bold',
+    'text-shadow: 0 0 10px #00f5ff',
+    'padding: 10px 20px',
+    'border: 2px solid #00f5ff'
+].join(';');
+
+console.log('%c⚡ SYSTEM INITIATED ⚡', styles);
+console.log('%c🔮 Holographic Portfolio v2.0 Loaded', 'color: #00ff88; font-size: 14px;');
+console.log('%c⚠️  Access Level: Administrator', 'color: #ff00ff; font-size: 12px;');
+console.log('%c━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'color: #00f5ff;');
+
+// Easter egg - typing in console
+window.hackerman = function() {
+    console.log('%c🎯 YOU FOUND THE SECRET!', 'color: #00ff88; font-size: 24px; font-weight: bold;');
+    console.log('Type: getSkills() to see developer skills');
+}
+
+window.getSkills = function() {
+    console.table({
+        'Frontend': '⭐⭐⭐⭐⭐',
+        'Backend': '⭐⭐⭐⭐',
+        'Data Science': '⭐⭐⭐⭐⭐',
+        'Hacking': '🚫 Nice try!'
+    });
+}
