@@ -1,5 +1,4 @@
-// ===== MATRIX RAIN EFFECT (Optional) =====
-// Create canvas for background effect
+// ===== FLOATING PARTICLES EFFECT =====
 const canvas = document.createElement('canvas');
 canvas.style.position = 'fixed';
 canvas.style.top = '0';
@@ -7,7 +6,7 @@ canvas.style.left = '0';
 canvas.style.width = '100%';
 canvas.style.height = '100%';
 canvas.style.zIndex = '-2';
-canvas.style.opacity = '0.15';
+canvas.style.opacity = '0.3';
 canvas.style.pointerEvents = 'none';
 document.body.appendChild(canvas);
 
@@ -15,30 +14,54 @@ const ctx = canvas.getContext('2d');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-const matrix = "01";
-const fontSize = 14;
-const columns = canvas.width / fontSize;
-const drops = Array(Math.floor(columns)).fill(1);
+// Particles config
+const particles = [];
+const particleCount = 50;
 
-function drawMatrix() {
-    ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+class Particle {
+    constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 3 + 1;
+        this.speedX = Math.random() * 0.5 - 0.25;
+        this.speedY = Math.random() * 0.5 - 0.25;
+        this.color = Math.random() > 0.5 ? 'rgba(0, 212, 255, 0.6)' : 'rgba(184, 76, 255, 0.6)';
+    }
     
-    ctx.fillStyle = '#00f5ff';
-    ctx.font = fontSize + 'px monospace';
-    
-    for (let i = 0; i < drops.length; i++) {
-        const text = matrix[Math.floor(Math.random() * matrix.length)];
-        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+    update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
         
-        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-            drops[i] = 0;
-        }
-        drops[i]++;
+        if (this.x > canvas.width) this.x = 0;
+        if (this.x < 0) this.x = canvas.width;
+        if (this.y > canvas.height) this.y = 0;
+        if (this.y < 0) this.y = canvas.height;
+    }
+    
+    draw() {
+        ctx.fillStyle = this.color;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
     }
 }
 
-setInterval(drawMatrix, 50);
+for (let i = 0; i < particleCount; i++) {
+    particles.push(new Particle());
+}
+
+function animateParticles() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    particles.forEach(particle => {
+        particle.update();
+        particle.draw();
+    });
+    
+    requestAnimationFrame(animateParticles);
+}
+
+animateParticles();
 
 // Resize handler
 window.addEventListener('resize', () => {
