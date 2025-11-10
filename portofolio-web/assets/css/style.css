@@ -384,7 +384,14 @@ section {
 
 .project-info h3 {
     font-size: 1.5rem;
+    margin-bottom: 10px; /* Kurangin dari 15px */
+}
+
+.project-info h4 {
+    font-size: 1rem;
+    color: var(--primary-color);
     margin-bottom: 15px;
+    font-weight: 500;
 }
 
 .project-info p {
@@ -666,4 +673,5 @@ section {
     .btn {
         width: 100%;
     }
+
 }
